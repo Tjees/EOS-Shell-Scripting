@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Controleer of een map is opgegeven als argument
+if [ $# -eq 0 ]; then
+    echo "Geef een mapnaam als argument op."
+    exit 1
+fi
+
+# Loop door alle JPEG-bestanden in de opgegeven map
+for jpeg_file in "$1"/*.jpg "$1"/*.jpeg "$1"/*.JPG "$1"/*.JPEG; do
+    if [ -f "$jpeg_file" ]; then
+        # Bepaal de uitvoernaam voor het PNG-bestand
+        png_file="${jpeg_file%.*}.png"
+
+        # Gebruik convert om het JPEG-bestand om te zetten naar een PNG van maximaal 128x128 pixels
+        convert "$jpeg_file" -resize 128x128 "$png_file"
+
+        echo "Geconverteerd: $jpeg_file -> $png_file"
+    fi
+done

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Controleer of zowel een mapnaam, een commando en een logbestand zijn opgegeven als argumenten
+if [ $# -ne 3 ]; then
+    echo "Geef een mapnaam, een commando en een logbestand als argumenten op."
+    exit 1
+fi
+
+# Maak het logbestand leeg of maak het aan als het niet bestaat
+log_file="$3"
+> "$log_file"
+
+# Loop door alle bestanden in de opgegeven map
+for file in "$1"/*; do
+    if [ -f "$file" ]; then
+        # Voer het opgegeven commando uit op het huidige bestand
+        # stuur output en errors naar het logbestand
+        $2 "$file" >> "$log_file" 2>&1
+
+        # Controleer de exit-status van het commando en schrijf het resultaat naar het logbestand
+        if [ $? -eq 0 ]; then
+            echo "Succes: $file" >> "$log_file"
+        else
+            echo "Fout: $file" >> "$log_file"
+        fi
+    fi
+done

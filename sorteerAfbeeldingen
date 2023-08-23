@@ -1,0 +1,12 @@
+#!/bin/bash
+
+src_path="$1"
+dest_path="$src_path/Afbeeldingen"
+
+# Maak de doelmap aan als deze niet bestaat
+mkdir -p "$dest_path"
+
+# Gebruik find om JPEG- en PNG-bestanden te vinden en verplaatsen
+find "$src_path" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -exec mv {} "$dest_path" \;
+
+echo "Afbeeldingsbestanden zijn verplaatst naar $dest_path"

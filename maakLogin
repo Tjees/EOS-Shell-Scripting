@@ -1,0 +1,32 @@
+#!/bin/bash 
+
+# Controleer of een bestandsnaam is opgegeven als argument
+if [ $# -ne 1 ]; then
+    echo "Geef een bestandsnaam als argument op."
+    exit 1
+fi
+
+# Vraag om de gebruikersnaam
+read -p "Geef je naam (default: $(whoami)): " username
+username=${username:-$(whoami)}
+
+# Vraag om het wachtwoord en herhaal het totdat tweemaal hetzelfde wachtwoord is ingevoerd
+while true; do
+    read -s -p "Geef een wachtwoord (minstens 8 karakters): " password1
+    echo
+    read -s -p "Herhaal het wachtwoord: " password2
+    echo
+
+    if [ "$password1" = "$password2" ] && [ ${#password1} -ge 8 ]; then
+        break
+    else
+        echo "Wachtwoorden komen niet overeen of zijn te kort. Probeer opnieuw."
+    fi
+done
+
+# Genereer een MD5-hash van het wachtwoord
+password_hash=$(echo -n "$password1" | md5sum | cut -d ' ' -f 1)
+
+# Schrijf de gebruikersnaam en hash naar het opgegeven bestand
+echo "$username:$password_hash" > "$1"
+echo "Gebruikersnaam en hash zijn opgeslagen in $1"

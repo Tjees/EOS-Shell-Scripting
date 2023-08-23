@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Controleer of een bestand is opgegeven als argument
+if [ $# -eq 0 ]; then
+    echo "Geef een bestandsnaam als argument op."
+    exit 1
+fi
+
+# Haal de bestandsextensie op
+ext="${1##*.}"
+
+# Gebruik een case statement om de juiste actie uit te voeren op basis van de extensie
+case "$ext" in
+    py)
+        python3 "$1"
+        ;;
+    sh)
+        bash "$1"
+        ;;
+    cc)
+        cat "$1"
+        ;;
+    *)
+        echo "Ongeldige bestandsextensie: .$ext"
+        ;;
+esac
