@@ -1,0 +1,9 @@
+#!/bin/bash
+
+map="$1" # Het pad naar de map om te controleren
+
+if [ -d "$map/.git" ]; then
+    echo "$map is een Git-repository."
+else
+    echo "$map is geen Git-repository."
+fi
